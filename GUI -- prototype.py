@@ -1,84 +1,13 @@
-import tkinter as tk
-import time
-import calendar
-from datetime import datetime
-
-# ----- Update Clock -----
-def update_time():
-    now = datetime.now()
-    time_str = now.strftime("%I:%M:%S %p")
-    date_str = now.strftime("%A, %B %d, %Y")
-
-    time_label.config(text=time_str)
-    date_label.config(text=date_str)
-
-    root.after(1000, update_time)
-
-# ----- Update Calendar -----
-def update_calendar():
-    now = datetime.now()
-    cal_text = calendar.month(now.year, now.month)
-    calendar_label.config(text=cal_text)
-
-# ===== GUI SETUP =====
-root = tk.Tk()
-root.title("Retro Pi Dashboard")
-root.geometry("600x650")
-
-# Retro CRT colors
-CRT_GREEN = "#33FF33"
-CRT_BLACK = "#000000"
-
-root.configure(bg=CRT_BLACK)
-
-# ----- Fake Scanlines -----
-def scanlines(event):
-    w = event.width
-    h = event.height
-    canvas.delete("scan")
-    for y in range(0, h, 4):
-        canvas.create_line(0, y, w, y, fill="#003300", tags="scan")
-
-canvas = tk.Canvas(root, bg=CRT_BLACK, highlightthickness=0)
-canvas.pack(fill="both", expand=True)
-canvas.bind("<Configure>", scanlines)
-
-# ----- Retro Frame -----
-def retro_frame(parent, height):
-    frame = tk.Frame(
-        parent,
-        bg=CRT_BLACK,
-        highlightbackground=CRT_GREEN,
-        highlightcolor=CRT_GREEN,
-        highlightthickness=2,
-        bd=0
-    )
-    frame.pack(pady=15)
-    frame.configure(width=520, height=height)
-    frame.pack_propagate(False)
-    return frame
-
-# ----- TIME SECTION -----
-time_frame = retro_frame(canvas, 180)
-
-time_label = tk.Label(
-    time_frame,
-    font=("Courier", 46, "bold"),
-    fg=CRT_GREEN,
-    bg=CRT_BLACK
-)
-time_label.pack(pady=10)
-
-date_label = tk.Label(
-    time_frame,
-    font=("Courier", 20),
-    fg=CRT_GREEN,
-    bg=CRT_BLACK
-)
-date_label.pack()
-
 # ----- CALENDAR SECTION -----
-cal_frame = retro_frame(canvas, 350)
+cal_frame = tk.Frame(
+    canvas,
+    bg=CRT_BLACK,
+    highlightbackground=CRT_GREEN,
+    highlightcolor=CRT_GREEN,
+    highlightthickness=2,
+    bd=0
+)
+cal_frame.pack(pady=15, fill="both", expand=True)
 
 cal_title = tk.Label(
     cal_frame,
@@ -96,10 +25,5 @@ calendar_label = tk.Label(
     bg=CRT_BLACK,
     justify="left"
 )
-calendar_label.pack()
+calendar_label.pack(padx=10, pady=10, anchor="center")
 
-# Start updating
-update_time()
-update_calendar()
-
-root.mainloop()
