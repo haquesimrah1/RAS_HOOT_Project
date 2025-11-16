@@ -23,70 +23,82 @@ def update_calendar():
 # ===== GUI SETUP =====
 root = tk.Tk()
 root.title("Retro Pi Dashboard")
-root.geometry("520x700")
+root.geometry("600x650")
 
-# Retro CRT green + black
+# Retro CRT colors
 CRT_GREEN = "#33FF33"
 CRT_BLACK = "#000000"
 
 root.configure(bg=CRT_BLACK)
 
-# ----- Optional Fake Scanlines -----
+# ----- Fake Scanlines -----
 def scanlines(event):
     w = event.width
     h = event.height
     canvas.delete("scan")
     for y in range(0, h, 4):
-        canvas.create_line(0, y, w, y, fill="#002200", tags="scan")
+        canvas.create_line(0, y, w, y, fill="#003300", tags="scan")
 
 canvas = tk.Canvas(root, bg=CRT_BLACK, highlightthickness=0)
 canvas.pack(fill="both", expand=True)
 canvas.bind("<Configure>", scanlines)
 
-# ----- Styled Frame -----
-def retro_frame(parent):
-    return tk.Frame(parent, bg=CRT_BLACK, highlightbackground=CRT_GREEN,
-                    highlightcolor=CRT_GREEN, highlightthickness=2, bd=0)
+# ----- Retro Frame -----
+def retro_frame(parent, height):
+    frame = tk.Frame(
+        parent,
+        bg=CRT_BLACK,
+        highlightbackground=CRT_GREEN,
+        highlightcolor=CRT_GREEN,
+        highlightthickness=2,
+        bd=0
+    )
+    frame.pack(pady=15)
+    frame.configure(width=520, height=height)
+    frame.pack_propagate(False)
+    return frame
 
-# ----- TIME CARD -----
-time_frame = retro_frame(canvas)
-time_frame.place(relx=0.5, y=80, anchor="n", width=450, height=180)
+# ----- TIME SECTION -----
+time_frame = retro_frame(canvas, 180)
 
 time_label = tk.Label(
-    time_frame, text="",
-    font=("Courier", 44, "bold"),
-    fg=CRT_GREEN, bg=CRT_BLACK
+    time_frame,
+    font=("Courier", 46, "bold"),
+    fg=CRT_GREEN,
+    bg=CRT_BLACK
 )
 time_label.pack(pady=10)
 
 date_label = tk.Label(
-    time_frame, text="",
-    font=("Courier", 18),
-    fg=CRT_GREEN, bg=CRT_BLACK
+    time_frame,
+    font=("Courier", 20),
+    fg=CRT_GREEN,
+    bg=CRT_BLACK
 )
 date_label.pack()
 
-# ----- CALENDAR CARD -----
-calendar_frame = retro_frame(canvas)
-calendar_frame.place(relx=0.5, y=300, anchor="n", width=450, height=350)
+# ----- CALENDAR SECTION -----
+cal_frame = retro_frame(canvas, 350)
 
-calendar_title = tk.Label(
-    calendar_frame, text="MONTHLY CALENDAR",
-    font=("Courier", 18, "bold"),
-    fg=CRT_GREEN, bg=CRT_BLACK
+cal_title = tk.Label(
+    cal_frame,
+    text="MONTHLY CALENDAR",
+    font=("Courier", 22, "bold"),
+    fg=CRT_GREEN,
+    bg=CRT_BLACK
 )
-calendar_title.pack(pady=10)
+cal_title.pack(pady=10)
 
 calendar_label = tk.Label(
-    calendar_frame,
-    font=("Courier", 14),
+    cal_frame,
+    font=("Courier", 16),
     fg=CRT_GREEN,
     bg=CRT_BLACK,
     justify="left"
 )
 calendar_label.pack()
 
-# Start updates
+# Start updating
 update_time()
 update_calendar()
 
