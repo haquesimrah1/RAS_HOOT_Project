@@ -22,7 +22,7 @@ def update_calendar():
 
 # ===== GUI SETUP =====
 root = tk.Tk()
-root.title("Retro Pi Dashboard")
+root.title("Hoot Dashboard")
 root.geometry("600x750")
 
 # Retro CRT colors
@@ -102,3 +102,4 @@ update_time()
 update_calendar()
 
 root.mainloop()
+
