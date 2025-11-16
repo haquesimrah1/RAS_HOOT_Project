@@ -88,4 +88,17 @@ cal_title = tk.Label(
 )
 cal_title.pack(pady=10)
 
-cale
+calendar_label = tk.Label(
+    cal_frame,
+    font=("Courier", 16),
+    fg=CRT_GREEN,
+    bg=CRT_BLACK,
+    justify="left"
+)
+calendar_label.pack(padx=20, pady=20)
+
+# Start updates
+update_time()
+update_calendar()
+
+root.mainloop()
